@@ -1,4 +1,4 @@
-from module_generation import parametros_mediciones
+from generation_module import parametros_mediciones
 
 intervalos = [(i*1,(i+1)*1) for i in range(30)]  # CHANGE 1 -> 138
 intervalos[-1] = (intervalos[-1][0],len(parametros_mediciones))

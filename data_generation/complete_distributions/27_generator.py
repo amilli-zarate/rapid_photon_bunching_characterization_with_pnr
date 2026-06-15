@@ -1,4 +1,4 @@
-from module_generation import *
+from generation_module import *
 
 contador = 0; t1 = time()
 for (nbar,g2) in parametros_mediciones[27:28]:
