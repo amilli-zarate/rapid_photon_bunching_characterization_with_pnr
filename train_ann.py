@@ -27,56 +27,37 @@ def leer_linea_doc_DB(linea, n_limite=10):
 
 
 def leer_varias_lineas_doc_DB(num_lineas, nbar, g2, realizaciones, linea_inicio=0, n_limite=10,
-                              delta_nbar=0.005, delta_g2=0.005, nbar_err=0.01, g2_err=0.01,
                               directory="data_generation/incomplete_distributions/"):
-
-    nbars = [nbar]; g2s = [g2]
-    delta = nbar_err
-    while delta<=delta_nbar:
-        nbars.append( nbar-delta)
-        nbars.append( nbar+delta)
-        delta += nbar_err
-    delta = g2_err
-    while delta<=delta_g2:
-        g2s.append( g2-delta)
-        g2s.append( g2+delta)
-        delta += g2_err
-
+    
     datos = []
 
-    for nbarp in nbars:
-        for g2p in g2s:
+    filename = f"{nbar:.2f}_{g2:.2f}_{realizaciones:d}.txt"
 
-            filename = f"{nbarp:.2f}_{g2p:.2f}_{realizaciones:d}.txt"
+    with open(directory+filename, "r") as file:
+        
+        contador = 0
+        for i, linea in enumerate(file):
+            if i<linea_inicio:
+                continue
             try:
-
-                with open(directory+filename, "r") as file:
-        
-                    contador = 0
-                    for i, linea in enumerate(file):
-                        if i<linea_inicio:
-                            continue
-                        try:
-                            distb_incompleta = leer_linea_doc_DB(linea, n_limite)
-                        except ValueError:
-                            print(f"ERROR DE FORMATO en la línea {linea} de {filename}.")
-                        distb_incompleta['nbar'] = float(nbarp)
-                        distb_incompleta['g2'] = float(g2p)
-                        distb_incompleta['realizaciones'] = int(realizaciones)
-                        datos.append( distb_incompleta )
-                        contador += 1
-                        if contador==num_lineas:
-                            return datos
-        
-                print(f"Se solicitó leer la línea {linea_inicio+num_lineas-1:d} pero el documento correspondiente a  nbar={nbarp:.2f} , g2={g2p:.2f} , realizaciones={realizaciones:d} solo llega hasta la línea {linea_inicio+contador-1:d}.")
+                distb_incompleta = leer_linea_doc_DB(linea, n_limite)
+            except ValueError:
+                print(f"ERROR DE FORMATO en la línea {linea} de {filename}.")
+            distb_incompleta['nbar'] = float(nbar)
+            distb_incompleta['g2'] = float(g2)
+            distb_incompleta['realizaciones'] = int(realizaciones)
+            datos.append( distb_incompleta )
+            contador += 1
+            if contador==num_lineas:
                 return datos
-            
-            except FileNotFoundError:
-                print(f"No se encontró archivo para nbar={nbarp:.2f} , g2={g2p:.2f} , rlzs = {realizaciones:d}")
+
+    print(f"Se solicitó leer la línea {linea_inicio+num_lineas-1:d} pero el documento correspondiente a  nbar={nbar:.2f} , g2={g2:.2f} , realizaciones={realizaciones:d} solo llega hasta la línea {linea_inicio+contador-1:d}.")
+
+    return datos
 
 
 posibles_nbar = np.arange(0.5,1.51,0.01)
-posibles_g2 = np.arange(0.01,4.1,0.01)
+posibles_g2 = np.arange(1.0,4.1,0.01)
 
 directory = "data_generation/complete_distributions/"
 
@@ -98,6 +79,7 @@ for nbar in posibles_nbar:
         g2s_para_cada_nbar[round(nbar,2)] = g2s
 
 nbars = list( g2s_para_cada_nbar.keys() )
+
 
 
 # -----HERE IS WHERE TRAINING STARTS----------
@@ -208,3 +190,4 @@ for num_batch in range(num_batches):
 
 with open("regressor.pickle", 'wb') as regressors_file:
     pickle.dump(regressor, regressors_file)
+    
