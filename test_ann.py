@@ -305,9 +305,9 @@ windows_scale = 2000
 
 cantidades = ('error_cuadratico','tiempo')
 
-labels = {'directo':"direct\ncalculation",
-          'NNregressor':"NN\nregressor",
-          'maxlikelihood':"maximum\nlikelihood"
+labels = {'directo':"DC",
+          'NNregressor':"ANN",
+          'maxlikelihood':"MLE"
          }
 colores = {'directo':"tab:blue",
            'NNregressor':"tab:orange",
@@ -339,8 +339,8 @@ for lower_bound,upper_bound in windows:
         for cantidad in cantidades:
             
             valores = results_outofsample[metodo][cantidad][idxs[0]:idxs[-1]+1]
-            promedio = np.mean(valores)#,keepdims=True)
-            std = np.std(valores)#,mean=promedio) [cambiar una vez actualizado numpy]
+            promedio = np.mean(valores)
+            std = np.std(valores)
             
             results_outofsample_promedio[metodo][cantidad]['mean'].append(
                 promedio
@@ -368,11 +368,14 @@ for i,cantidad in enumerate(cantidades):
     
     if cantidad=='error_cuadratico':
         line = axs[i].plot(1e-3*windows_centers, [np.sqrt(cramer_rao_bound_per_sample/rlzs) for rlzs in windows_centers],
-                           lw=2., color='red', ls='dotted', label="Cramér-Rao\nbound")
+                           lw=2., color='red', ls='dotted', label="CRB")
         lines.append(line[0])
     if cantidad=='tiempo':
         axs[i].set_yscale('log')
-        axs[i].set_xlabel("# detection windows")
+        axs[i].set_xlabel("measuring time   [ms]")
+
+    axs[i].set_xscale('log')
+    axs[i].set_ylabel(axis_labels[cantidad])
 
 fig.legend(handles=lines, loc=(0.,0.5), bbox_to_anchor=(1.03,0.5))
 fig.savefig( "outofsample_comparison.pdf" , bbox_inches='tight')
