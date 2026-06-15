@@ -2,6 +2,7 @@
 
 import os
 from time import time
+from pathlib import Path
 
 
 def leer_parametros_DB_original(filepath):
@@ -45,17 +46,20 @@ directory = "experiment_num-clicks_series/"
 filepaths_mediciones = {}
 
 for filename in os.listdir(directory):
+
+	file = Path(filename)
+	if file.suffix=='.txt':
     
-	nbar, g2 = leer_parametros_DB_original(filename)[0:2]
-    
-	if float(nbar)<=1.5:
-        
-		filepath = directory + filename
-        
-		if (nbar,g2) not in filepaths_mediciones.keys():
-			filepaths_mediciones[(nbar,g2)] = [filepath]
-		else:
-			filepaths_mediciones[(nbar,g2)].append(filepath)
+		nbar, g2 = leer_parametros_DB_original(filename)[0:2]
+		
+		if float(nbar)<=1.5:
+			
+			filepath = directory + filename
+			
+			if (nbar,g2) not in filepaths_mediciones.keys():
+				filepaths_mediciones[(nbar,g2)] = [filepath]
+			else:
+				filepaths_mediciones[(nbar,g2)].append(filepath)
 
 parametros_mediciones = tuple( filepaths_mediciones.keys() )
 
