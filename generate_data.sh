@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+bash data_generation/complete_distributions/compute_complete_distributions.sh
+bash data_generation/incomplete_distributions/generate_incomplete_distributions.sh
+bash data_generation/test_distributions/generate_test_distributions.sh
