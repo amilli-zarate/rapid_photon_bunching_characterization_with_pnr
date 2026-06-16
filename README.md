@@ -30,7 +30,12 @@ To reproduce the result, follow the below instructions.
 
 **INSTRUCTIONS**
 
-0. Install Python 3 and all requirements listed in  requirements.txt .
+0.1. Install Python 3 and all requirements listed in  requirements.txt .
+
+0.2. Download the zip file stored in the url appearing in
+experiment_num-clicks_series.txt
+and place the file inside the folder
+data_generation/complete_distributions/experiment_num-clicks_series/
 
 1. Run  generate_data.sh    using bash.
 
