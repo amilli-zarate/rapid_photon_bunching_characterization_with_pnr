@@ -10,8 +10,8 @@ For this purpose, this software performs a three step process:
 
 1. Based on a set of number-of-clicks series obtained from PNR experiments,
 it computes all data needed for the ANN to be trained, and tested.
-(The experimental data is located in
-_data_generation/complete_distributions/experiment_num-clicks_series/experiment_num-clicks_series.zip_
+(The experimental data must be downloaded from
+https://drive.google.com/file/d/16bXARn1yIWqVfgolvo4aquOKE0UoIGAk/view?usp=sharing
 )
 
 2. Trains an ANN model (whose architecture was previously chosen after an extensive work of
