@@ -32,8 +32,9 @@ To reproduce the result, follow the below instructions.
 
 0.1. Install Python 3 and all requirements listed in  requirements.txt .
 
-0.2. Download the zip file stored in the url appearing in
-experiment_num-clicks_series.txt
+0.2. The experiment number-of-detection series are stored in a cloud platform.
+Download the zip file containing this data from
+https://drive.google.com/file/d/16bXARn1yIWqVfgolvo4aquOKE0UoIGAk/view?usp=sharing
 and place the file inside the folder
 data_generation/complete_distributions/experiment_num-clicks_series/
 
