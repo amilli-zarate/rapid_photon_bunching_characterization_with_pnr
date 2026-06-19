@@ -4,6 +4,10 @@ import os
 from time import time
 from pathlib import Path
 
+path = Path(__file__).resolve().parent
+directory_experiment = path/"experiment_num-clicks_series/"
+directoy_generation = path
+
 
 def leer_parametros_DB_original(filepath):
     
@@ -41,11 +45,10 @@ def distribucion_experimental(filepath):
 		return P
 
 
-directory = "experiment_num-clicks_series/"
 
 filepaths_mediciones = {}
 
-for filename in os.listdir(directory):
+for filename in os.listdir(directory_experiment):
 
 	file = Path(filename)
 	if file.suffix=='.txt':
@@ -54,7 +57,7 @@ for filename in os.listdir(directory):
 		
 		if float(nbar)<=1.5:
 			
-			filepath = directory + filename
+			filepath = directory_experiment/filename
 			
 			if (nbar,g2) not in filepaths_mediciones.keys():
 				filepaths_mediciones[(nbar,g2)] = [filepath]
@@ -64,9 +67,10 @@ for filename in os.listdir(directory):
 parametros_mediciones = tuple( filepaths_mediciones.keys() )
 
 
+
 def add_file_DB_distbs_completas(nbar,g2):
     
-	with open(f"{nbar}_{g2}.txt", 'w') as outfile:
+	with open(directoy_generation/f"{nbar}_{g2}.txt", 'w') as outfile:
 
 		for filepath in filepaths_mediciones[(nbar,g2)]:
             

@@ -1,0 +1,11 @@
+Using parallel computing, it is possible to reduce the computation time needed
+for generating the data that feeds the g2 estimators.
+
+If you have multiple processor cores at you disposal, you might want to
+distribute the computational cost across them.
+
+We offer an option for you to do that by allowing the possibility of dividing
+the distribution generation job for the complete set of 4155 sources into
+smaller jobs for several subset of sources.
+
+Would you like to use this option? (y/n):
