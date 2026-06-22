@@ -1,13 +1,19 @@
-num_params_por_nucleo = [3]*8 # ADJUST TO ENCOMPASS THE 4155 SOURCES
+from messages import messages as msgs
+from pathlib import Path
+
+directory = Path(__file__).resolve().parent
+num_params_per_thread = msgs.parallelization_query()
+
 intervalos = []
 contador = 0
-for num in num_params_por_nucleo:
+for num in num_params_per_thread:
 	intervalos.append( (contador,contador+num) )
 	contador += num
 
 for i,intervalo in enumerate(intervalos):
 
-	with open("base_file.py", 'r') as basefile, open(f"{i}_generator.py", "w") as genfile:
+	with open(directory/"base_file.py", 'r') as basefile, open(
+		directory/f"{i}_generator.py", "w") as genfile:
 
 		for j,line in enumerate(basefile,1):
 			if j==8:

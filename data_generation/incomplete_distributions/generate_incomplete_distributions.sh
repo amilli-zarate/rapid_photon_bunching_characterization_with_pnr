@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-cd data_generation/incomplete_distributions/
+python -m data_generation.incomplete_distributions.generator_of_generators
 
-python generator_of_generators.py
-
-scripts=$(printf '%s\n' *.py | grep -E '^[0-9]+_generator\.py$')
+scripts=$(ls data_generation/incomplete_distributions/*.py | grep -E '[0-9]+_generator\.py$')
 
 for script in $scripts; do
     python "$script" &

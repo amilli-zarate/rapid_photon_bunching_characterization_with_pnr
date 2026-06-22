@@ -9,7 +9,7 @@ contador = 0
 for (nbar,g2) in parametros_mediciones[0:550]:
 
 	t1 = time()   
-	filepaths = filepaths_mediciones[(nbar,g2)]
+	filepaths = filepaths_complete_distributions[(nbar,g2)]
 	num_distbs_a_generar_por_filepath = num_distbs_a_generar//len(filepaths)
 
 	num_distbs_a_generar_por_rlzs = {}
@@ -35,7 +35,7 @@ for (nbar,g2) in parametros_mediciones[0:550]:
 
 	for filepath in filepaths:
 
-		generar_distbs_para_DB(filepath, realizaciones, num_distbs_a_generar_por_rlzs)
+		generar_distbs_para_DB(str(filepath), realizaciones, num_distbs_a_generar_por_rlzs)
 
 	contador += 1
 	t2 = time()

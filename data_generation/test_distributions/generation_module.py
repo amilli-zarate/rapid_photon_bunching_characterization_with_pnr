@@ -6,6 +6,11 @@ import re
 from pathlib import Path
 
 
+directory = Path(__file__).resolve().parent
+directory_complete_distributions = directory.parent/"complete_distributions/"
+directory_generation = directory
+
+
 def distribucion_experimental(filepath):
 	"""
 	Esta función construye la distribución de probabilidad resultante de todos 
@@ -50,7 +55,8 @@ def leer_parametros(filepath):
 	return nbar, g2
 
 
-def generar_distbs_para_DB(filepath, realizaciones, dic_num_distbs_por_rlzs={}, n_limite=10):
+def generar_distbs_para_DB(filepath, realizaciones, dic_num_distbs_por_rlzs={},
+		n_limite=10, directory_generation=directory):
 	"""
 	Esta función crea un documento de texto donde cada renglón corresponde
 	a una distribución incompleta de número de fotones.
@@ -59,12 +65,12 @@ def generar_distbs_para_DB(filepath, realizaciones, dic_num_distbs_por_rlzs={}, 
 	default_dic_num_distbs_por_rlzs = { rlzs:100 for rlzs in realizaciones }
 	num_distbs_por_rlzs = { **default_dic_num_distbs_por_rlzs, **dic_num_distbs_por_rlzs }
 
-	nbar, g2 = leer_parametros(filepath)
+	nbar, g2 = leer_parametros(str(filepath))
 	X = variable_aleatoria_experimental(filepath)
 
 	for rlzs in realizaciones:
 
-		with open(f"{nbar}_{g2}_{rlzs}.txt", "a") as outfile:
+		with open(directory_generation/f"{nbar}_{g2}_{rlzs}.txt", "a") as outfile:
 
 			contador = 0
 			for i in range(num_distbs_por_rlzs[rlzs]):
@@ -89,27 +95,25 @@ def generar_distbs_para_DB(filepath, realizaciones, dic_num_distbs_por_rlzs={}, 
 
 	return filepath
 
-directory = "../complete_distributions/"
-filepaths_mediciones = {}
 
-for filename in os.listdir(directory):
-	
-	file = Path(filename)
-	
-	if file.suffix=='.txt':
+filepaths_complete_distributions = {}
 
-		nbar, g2 = leer_parametros(filename)
+for file in os.listdir(directory_complete_distributions):
+	
+	filepath = directory_complete_distributions/Path(file)
+
+	if filepath.suffix=='.txt':
+
+		nbar, g2 = leer_parametros(filepath.name)
 
 		if float(nbar)<=1.5:
 
-			filepath = directory + filename
-
-			if (nbar,g2) not in filepaths_mediciones.keys():
-				filepaths_mediciones[(nbar,g2)] = [filepath]
+			if (nbar,g2) not in filepaths_complete_distributions.keys():
+				filepaths_complete_distributions[(nbar,g2)] = [filepath]
 			else:
-				filepaths_mediciones[(nbar,g2)].append(filepath)
+				filepaths_complete_distributions[(nbar,g2)].append(filepath)
 
-parametros_mediciones = tuple( filepaths_mediciones.keys() )
+parametros_mediciones = tuple( filepaths_complete_distributions.keys() )
 
 
 

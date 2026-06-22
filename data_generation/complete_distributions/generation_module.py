@@ -1,12 +1,10 @@
-#!/usr/bin/env python3
-
 import os
 from time import time
 from pathlib import Path
 
-path = Path(__file__).resolve().parent
-directory_experiment = path/"experiment_num-clicks_series/"
-directoy_generation = path
+directory = Path(__file__).resolve().parent
+directory_experiment = directory/"experiment_num-clicks_series/"
+directoy_generation = directory
 
 
 def leer_parametros_DB_original(filepath):

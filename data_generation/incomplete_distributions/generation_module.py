@@ -5,6 +5,10 @@ import os
 import re
 from pathlib import Path
 
+directory = Path(__file__).resolve().parent
+directory_complete_distributions = directory.parent/"complete_distributions/"
+directory_generation = directory
+
 
 def distribucion_experimental(filepath):
 	"""
@@ -48,7 +52,8 @@ def leer_parametros(filepath):
 	return nbar, g2
 
 
-def generar_distbs_para_DB(filepath, realizaciones, dic_num_distbs_por_rlzs={}, n_limite=10):
+def generar_distbs_para_DB(filepath, realizaciones, dic_num_distbs_por_rlzs={},
+						   n_limite=10, directory_DB=directory_generation):
 	"""
 	Esta función crea un documento de texto donde cada renglón corresponde
 	a una distribución incompleta de número de fotones.
@@ -57,12 +62,14 @@ def generar_distbs_para_DB(filepath, realizaciones, dic_num_distbs_por_rlzs={}, 
 	default_dic_num_distbs_por_rlzs = { rlzs:10000 for rlzs in realizaciones }
 	num_distbs_por_rlzs = { **default_dic_num_distbs_por_rlzs, **dic_num_distbs_por_rlzs }
 
-	nbar, g2 = leer_parametros(filepath)
+	nbar, g2 = leer_parametros(str(filepath))
 	X = variable_aleatoria_experimental(filepath)
 
 	for rlzs in realizaciones:
 
-		with open(f"{nbar}_{g2}_{rlzs}.txt", "a") as outfile:
+		generated_filepath = directory_DB/f"{nbar}_{g2}_{rlzs}.txt"
+
+		with open(generated_filepath, "a") as outfile:
 
 			contador = 0
 			for i in range(num_distbs_por_rlzs[rlzs]):
@@ -85,29 +92,25 @@ def generar_distbs_para_DB(filepath, realizaciones, dic_num_distbs_por_rlzs={}, 
 
 		print(f"Éxito al escribir archivo para nbar~{nbar} , g2~{g2}, rlzs={rlzs}.")
 
-	return filepath
+	return generated_filepath
 
 
 
+filepaths_complete_distributions = {}
 
-directory = "../complete_distributions/"
-filepaths_mediciones = {}
-
-for file in os.listdir(directory):
+for file in os.listdir(directory_complete_distributions):
 	
-	file = Path(file)
+	filepath = directory_complete_distributions/Path(file)
 
-	if file.suffix=='.txt':
+	if filepath.suffix=='.txt':
 
-		nbar, g2 = leer_parametros(file.name)
+		nbar, g2 = leer_parametros(filepath.name)
 
 		if float(nbar)<=1.5:
 
-			filepath = directory + file.name
-
-			if (nbar,g2) not in filepaths_mediciones.keys():
-				filepaths_mediciones[(nbar,g2)] = [filepath]
+			if (nbar,g2) not in filepaths_complete_distributions.keys():
+				filepaths_complete_distributions[(nbar,g2)] = [filepath]
 			else:
-				filepaths_mediciones[(nbar,g2)].append(filepath)
+				filepaths_complete_distributions[(nbar,g2)].append(filepath)
 
-parametros_mediciones = tuple( filepaths_mediciones.keys() )
+parametros_mediciones = tuple( filepaths_complete_distributions.keys() )

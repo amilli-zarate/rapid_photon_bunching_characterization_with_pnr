@@ -15,9 +15,9 @@ def interact(message_filename, valid_options=False, restrictions=False):
             command = input()
 
     if restrictions != False:
-        compliance = all([f(command) for f in restrictions])
+        compliance = False
         while not compliance:
-            for i,restriction in enumerate(restrictions):
+            for i,restriction in enumerate(restrictions,1):
                 compliance = restriction(command)
                 if not compliance:
                     print(f"Restriction {i} is not met. Try again :")
@@ -34,7 +34,10 @@ def parallelization_query():
     if parallel_choice == 'y':
         num_params_per_thread = eval(
             interact('choose_parallel_config',
-            restrictions=( lambda command:isinstance( eval(command), list) ,)
+            restrictions=(
+                lambda command:isinstance( eval(command), list) ,
+                lambda command:sum(eval(command))==4155
+                )
             )
         )
     elif parallel_choice == 'n':

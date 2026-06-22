@@ -5,8 +5,7 @@ num_distbs_a_generar = 100
 num_distbs_limite = 100
 
 contador = 0
-for (nbar,g2) in parametros_mediciones[0:550]:
-
+for (nbar,g2) in parametros_mediciones[1560:2079]:
     t1 = time()
     filepaths = filepaths_complete_distributions[(nbar,g2)]
     num_distbs_a_generar_por_filepath = num_distbs_a_generar//len(filepaths)

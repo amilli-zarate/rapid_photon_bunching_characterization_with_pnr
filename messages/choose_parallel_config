@@ -1,1 +1,16 @@
-Choose a configuration :
+Enter a list containing the number of light sources that each thread will
+handle. The list must follow the bellow rules:
+
+1. It is given as a Python list.
+
+2. The sum of all the elements in the list is equal to the total
+number of sources i.e. to 4155.
+
+Example: If I had access to 8 processor cores, I would type the list
+[520,520,520,519,519,519,519,519]
+in order to reduce the computation time as much as possible.
+
+Equivalently, I would type
+[520]*3 + [519]*5
+
+Enter your list :
